@@ -1,0 +1,18 @@
+[package]
+name = "elf_rs"
+version = "0.1.0"
+authors = ["Vincent Hou <vincent.houyi@gmail.com>"]
+edition = "2018"
+description = "A simple no_std ELF file reader for ELF32 and ELF64"
+readme = "README.md"
+categories = ["no_std", "parsing"]
+repository = "https://github.com/vincenthouyi/elf_rs"
+license-file = "LICENSE"
+
+[badges]
+travis-ci = { repository = "vincenthouyi/elf_rs", branch = "master" }
+
+[dependencies]
+enum-primitive-derive = "^0.1"
+num-traits = "^0.1"
+bitflags = "1.0.4"
