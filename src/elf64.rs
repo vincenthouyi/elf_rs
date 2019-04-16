@@ -1,5 +1,4 @@
 use core::fmt;
-use num_traits::{FromPrimitive};
 use crate::*;
 
 pub struct Elf64<'a>(&'a [u8]);
