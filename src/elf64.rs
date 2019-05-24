@@ -54,11 +54,11 @@ impl GenElfHeader for ElfHeader64 {
     type Word = u64;
 
     fn class(&self) -> ElfClass {
-        ElfClass::from_u8(self.class).unwrap()
+        self.class.into()
     }
 
     fn endianness(&self) -> ElfEndian {
-        ElfEndian::from_u8(self.endianness).unwrap()
+        self.endianness.into()
     }
 
     fn header_version(&self) -> u8 {
@@ -66,7 +66,7 @@ impl GenElfHeader for ElfHeader64 {
     }
 
     fn abi(&self) -> ElfAbi {
-        ElfAbi::from_u8(self.abi).unwrap()
+        self.abi.into()
     }
 
     fn abi_version(&self) -> u8 {
@@ -74,11 +74,11 @@ impl GenElfHeader for ElfHeader64 {
     }
 
     fn elftype(&self) -> ElfType {
-        ElfType::from_u16(self.elftype).unwrap()
+        self.elftype.into()
     }
 
     fn machine(&self) -> ElfMachine {
-        ElfMachine::from_u16(self.machine).unwrap()
+        self.machine.into()
     }
 
     fn elf_version(&self) -> u32 {
@@ -168,7 +168,7 @@ impl GenProgramHeader for ProgramHeader64 {
     type Word = u64;
 
     fn ph_type(&self) -> ProgramType {
-        ProgramType::from_u32(self.p_type).unwrap()
+        self.p_type.into()
     }
 
     fn flags(&self) -> u32 {
@@ -223,7 +223,7 @@ impl GenSectionHeader for SectionHeader64 {
     }
 
     fn sh_type(&self) -> SectionType {
-        SectionType::from_u32(self.sh_type).unwrap()
+        self.sh_type.into()
     }
 
     fn flags(&self) -> SectionHeaderFlags {

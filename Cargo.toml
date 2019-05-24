@@ -13,6 +13,4 @@ license-file = "LICENSE"
 travis-ci = { repository = "vincenthouyi/elf_rs", branch = "master" }
 
 [dependencies]
-enum-primitive-derive = "^0.1"
-num-traits = "^0.1"
 bitflags = "1.0.4"
