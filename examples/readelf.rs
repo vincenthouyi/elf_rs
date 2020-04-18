@@ -38,7 +38,7 @@ fn read_elf(filename: &String) -> Result<(),()> {
             println!("{:x?}", s);
         }
 
-        let s = e.lookup_section(b".text");
+        let s = e.lookup_section(".text");
         println!("s {:?}", s);
 
     } else if let Elf::Elf32(e) = elf {
