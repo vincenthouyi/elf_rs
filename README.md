@@ -46,4 +46,6 @@ $ cargo run --example readelf <path_to_elf_file>
 
 License
 ===
-In order to support 996.ICU movement, this project is released under `Anti 996 License`, which require individual and enterprise users of this project strictly comply with local labor and employment laws and regulations.
+it is distributed under the terms of the MIT license.
+
+Please see LICENSE file for details.
