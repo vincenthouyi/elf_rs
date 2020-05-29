@@ -13,8 +13,8 @@ use elf::ElfGen;
 use elf_header::{ElfHeaderGen};
 
 pub use elf_header::{ElfAbi, ElfClass, ElfEndian, ElfMachine, ElfType};
-pub use program_header::{ProgramType};
-pub use section_header::{SectionType};
+pub use program_header::ProgramType;
+pub use section_header::{SectionHeader, SectionHeaderFlags, SectionType};
 
 type Elf32<'a> = elf::ElfGen<'a, u32>;
 type Elf64<'a> = elf::ElfGen<'a, u64>;
