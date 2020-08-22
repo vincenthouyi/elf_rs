@@ -1,5 +1,8 @@
-elf_rs [![Build Status](https://travis-ci.com/vincenthouyi/elf_rs.svg?token=UBL21ZSzs6EH1xWep8q2&branch=master)](https://travis-ci.com/vincenthouyi/elf_rs)
+elf_rs 
 ===
+[![Build Status](https://travis-ci.com/vincenthouyi/elf_rs.svg?token=UBL21ZSzs6EH1xWep8q2&branch=master)](https://travis-ci.com/vincenthouyi/elf_rs)
+[![Crates.io](https://img.shields.io/crates/v/elf_rs)](https://crates.io/crates/elf_rs)
+
 This is a no_std library for ELF file handling.
 It supports ELF32 and ELF64 format.
 
