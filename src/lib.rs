@@ -1,3 +1,23 @@
+//! A simple no_std ELF file reader for ELF32 and ELF64.
+//!
+//! ## Minimal Example
+//! ```ignore
+//! use elf_rs::Elf;
+//!
+//! /// Minimal example. Works in `no_std`-contexts and the parsing
+//! /// itself needs zero allocations.
+//! fn main() {
+//!     let elf_bytes = include_bytes!("path/to/file.elf");
+//!     let elf = elf_rs::Elf::from_bytes(elf_bytes).unwrap();
+//!     let elf64 = match elf {
+//!         Elf::Elf64(elf) => elf,
+//!         _ => panic!("got Elf32, expected Elf64"),
+//!     };
+//!     let pr_hdrs = elf64.program_header_iter().collect::<Vec<_>>();
+//!     dbg!(pr_hdrs);
+//! }
+//! ```
+
 #![no_std]
 #![allow(non_camel_case_types)]
 
