@@ -12,6 +12,19 @@ const LOOS: u32 = 0x60000000;
 const HIOS: u32 = 0x6FFFFFFF;
 const LOPROC: u32 = 0x70000000;
 const HIPROC: u32 = 0x7FFFFFFF;
+
+bitflags! {
+    /// The flags of an ELF program header. Always 32 bit long, also
+    /// for 64-bit ELFs.
+    ///
+    /// Also called "Segment Permissions" in ELF specification or "p_flags".
+    pub struct ProgramHeaderFlags: u32 {
+        const EXECUTE = 1;
+        const WRITE = 2;
+        const READ = 4;
+    }
+}
+
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum ProgramType {
     NULL,                   // 0x00000000,
@@ -47,7 +60,7 @@ impl From<u32> for ProgramType {
 pub trait ProgramHeader {
     fn ph_type(&self) -> ProgramType;
 
-    fn flags(&self) -> u32;
+    fn flags(&self) -> ProgramHeaderFlags;
 
     fn offset(&self) -> u64;
 

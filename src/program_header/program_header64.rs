@@ -1,11 +1,11 @@
 use core::ptr::read_unaligned;
-use crate::program_header::{ProgramHeader, ProgramType};
+use crate::program_header::{ProgramHeader, ProgramHeaderFlags, ProgramType};
 
 #[derive(Debug)]
 #[repr(C)]
 pub struct ProgramHeader64 {
     p_type: u32,
-    p_flags: u32,
+    p_flags: ProgramHeaderFlags,
     p_offset: u64,
     p_vaddr: u64,
     p_paddr: u64,
@@ -21,7 +21,7 @@ impl ProgramHeader for ProgramHeader64 {
         }
     }
 
-    fn flags(&self) -> u32 {
+    fn flags(&self) -> ProgramHeaderFlags {
         unsafe {
             read_unaligned(&self.p_flags)
         }
