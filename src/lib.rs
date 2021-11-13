@@ -1,23 +1,27 @@
 #![no_std]
 #![allow(non_camel_case_types)]
 
-#[macro_use] extern crate bitflags;
+#[macro_use]
+extern crate bitflags;
 extern crate num_traits;
 
+use core::mem::size_of;
 mod elf;
 mod elf_header;
 mod program_header;
 mod section_header;
 
-use elf::ElfGen;
-use elf_header::{ElfHeaderGen};
-
-pub use elf_header::{ElfAbi, ElfClass, ElfEndian, ElfMachine, ElfType};
-pub use program_header::ProgramType;
-pub use section_header::{SectionHeader, SectionHeaderFlags, SectionType};
-
-type Elf32<'a> = elf::ElfGen<'a, u32>;
-type Elf64<'a> = elf::ElfGen<'a, u64>;
+pub use elf::{Elf32, Elf64, ElfFile};
+pub use elf_header::{
+    ElfAbi, ElfClass, ElfEndian, ElfHeader, ElfHeader32, ElfHeader64, ElfMachine, ElfType,
+};
+pub use program_header::{
+    ProgramHeader32, ProgramHeader64, ProgramHeaderIter, ProgramHeaderWrapper, ProgramType,
+};
+pub use section_header::{
+    SectionHeader, SectionHeader32, SectionHeader64, SectionHeaderFlags, SectionHeaderIter,
+    SectionHeaderWrapper, SectionType,
+};
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Error {
@@ -29,14 +33,12 @@ pub enum Error {
 #[derive(Debug)]
 pub enum Elf<'a> {
     Elf32(Elf32<'a>),
-    Elf64(Elf64<'a>)
+    Elf64(Elf64<'a>),
 }
 
 impl<'a> Elf<'a> {
     pub fn from_bytes(elf_buf: &'a [u8]) -> Result<Self, Error> {
-        use core::mem::size_of;
-
-        if elf_buf.len() < size_of::<ElfHeaderGen::<u32>>() {
+        if elf_buf.len() < size_of::<ElfHeader32>() {
             return Err(Error::BufferTooShort);
         }
 
@@ -44,28 +46,55 @@ impl<'a> Elf<'a> {
             return Err(Error::InvalidMagic);
         }
 
-        let tmp_elf = ElfGen::<u32>::new(elf_buf);
-        match tmp_elf.header().class() {
-            ElfClass::Elf64 => { 
-                if elf_buf.len() < size_of::<ElfHeaderGen<u64>>() {
-                    return Err(Error::BufferTooShort);
-                }
-                let elf = Elf64::new(elf_buf);
-                if elf_buf.len() < elf.header().elf_header_size() as usize {
-                    Err(Error::BufferTooShort)
-                } else {
-                    Ok(Elf::Elf64(elf))
-                }
-            }
-            ElfClass::Elf32 => { 
-                let elf = Elf32::new(elf_buf);
-                if elf_buf.len() < elf.header().elf_header_size() as usize {
-                    Err(Error::BufferTooShort)
-                } else {
-                    Ok(Elf::Elf32(elf))
-                }
-            }
-            ElfClass::Unknown(_) => { Err(Error::InvalidClass) }
+        let tmp_elf = Elf32::new(elf_buf);
+        match tmp_elf.elf_header().class() {
+            ElfClass::Elf64 => Elf64::from_bytes(elf_buf).map(|e| Elf::Elf64(e)),
+            ElfClass::Elf32 => Elf32::from_bytes(elf_buf).map(|e| Elf::Elf32(e)),
+            ElfClass::Unknown(_) => Err(Error::InvalidClass),
+        }
+    }
+}
+
+impl<'a> ElfFile for Elf<'a> {
+    fn content(&self) -> &[u8] {
+        match self {
+            Elf::Elf32(e) => e.content(),
+            Elf::Elf64(e) => e.content(),
+        }
+    }
+
+    fn elf_header(&self) -> crate::elf_header::ElfHeaderWrapper {
+        match self {
+            Elf::Elf32(e) => e.elf_header(),
+            Elf::Elf64(e) => e.elf_header(),
+        }
+    }
+
+    fn program_header_nth(&self, index: usize) -> Option<ProgramHeaderWrapper> {
+        match self {
+            Elf::Elf32(e) => e.program_header_nth(index),
+            Elf::Elf64(e) => e.program_header_nth(index),
+        }
+    }
+
+    fn program_header_iter(&self) -> ProgramHeaderIter {
+        match self {
+            Elf::Elf32(e) => e.program_header_iter(),
+            Elf::Elf64(e) => e.program_header_iter(),
+        }
+    }
+
+    fn section_header_nth(&self, index: usize) -> Option<SectionHeaderWrapper> {
+        match self {
+            Elf::Elf32(e) => e.section_header_nth(index),
+            Elf::Elf64(e) => e.section_header_nth(index),
+        }
+    }
+
+    fn section_header_iter(&self) -> SectionHeaderIter {
+        match self {
+            Elf::Elf32(e) => e.section_header_iter(),
+            Elf::Elf64(e) => e.section_header_iter(),
         }
     }
 }
