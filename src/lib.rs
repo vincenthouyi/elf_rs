@@ -36,7 +36,8 @@ pub use elf_header::{
     ElfAbi, ElfClass, ElfEndian, ElfHeader, ElfHeader32, ElfHeader64, ElfMachine, ElfType,
 };
 pub use program_header::{
-    ProgramHeader32, ProgramHeader64, ProgramHeaderIter, ProgramHeaderWrapper, ProgramType,
+    ProgramHeader32, ProgramHeader64, ProgramHeaderFlags, ProgramHeaderIter, ProgramHeaderWrapper,
+    ProgramType,
 };
 pub use section_header::{
     SectionHeader, SectionHeader32, SectionHeader64, SectionHeaderFlags, SectionHeaderIter,
