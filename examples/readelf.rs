@@ -33,8 +33,9 @@ fn read_elf(filename: &String) -> Result<(), ()> {
         println!("{:x?}", s);
     }
 
-    let s = elf.lookup_section(b".text");
-    println!("s {:?}", s);
+    if let Some(s) = elf.lookup_section(b".text") {
+        println!(".test section {:?}", s);
+    }
 
     Ok(())
 }
