@@ -50,81 +50,55 @@ impl<T: PrimInt + Into<u64>> ElfHeader for ElfHeaderGen<T> {
     }
 
     fn elftype(&self) -> ElfType {
-        unsafe {
-            read_unaligned(&self.elftype).into()
-        }
+        unsafe { read_unaligned(&self.elftype).into() }
     }
 
     fn machine(&self) -> ElfMachine {
-        unsafe {
-            read_unaligned(&self.machine).into()
-        }
+        unsafe { read_unaligned(&self.machine).into() }
     }
 
     fn elf_version(&self) -> u32 {
-        unsafe {
-            read_unaligned(&self.elf_version)
-        }
+        unsafe { read_unaligned(&self.elf_version) }
     }
 
     fn entry_point(&self) -> u64 {
-        unsafe {
-            read_unaligned(&self.entry).into()
-        }
+        unsafe { read_unaligned(&self.entry).into() }
     }
 
     fn program_header_offset(&self) -> u64 {
-        unsafe {
-            read_unaligned(&self.phoff).into()
-        }
+        unsafe { read_unaligned(&self.phoff).into() }
     }
 
     fn section_header_offset(&self) -> u64 {
-        unsafe {
-            read_unaligned(&self.shoff).into()
-        }
+        unsafe { read_unaligned(&self.shoff).into() }
     }
 
     fn flags(&self) -> u32 {
-        unsafe {
-            read_unaligned(&self.flags)
-        }
+        unsafe { read_unaligned(&self.flags) }
     }
 
     fn elf_header_size(&self) -> u16 {
-        unsafe {
-            read_unaligned(&self.ehsize)
-        }
+        unsafe { read_unaligned(&self.ehsize) }
     }
 
     fn program_header_entry_size(&self) -> u16 {
-        unsafe {
-            read_unaligned(&self.phentsize)
-        }
+        unsafe { read_unaligned(&self.phentsize) }
     }
 
     fn program_header_entry_num(&self) -> u16 {
-        unsafe {
-            read_unaligned(&self.phnum)
-        }
+        unsafe { read_unaligned(&self.phnum) }
     }
 
     fn section_header_entry_size(&self) -> u16 {
-        unsafe {
-            read_unaligned(&self.shentsize)
-        }
+        unsafe { read_unaligned(&self.shentsize) }
     }
 
     fn section_header_entry_num(&self) -> u16 {
-        unsafe {
-            read_unaligned(&self.shnum)
-        }
+        unsafe { read_unaligned(&self.shnum) }
     }
 
     fn shstr_index(&self) -> u16 {
-        unsafe {
-            read_unaligned(&self.shstrndx)
-        }
+        unsafe { read_unaligned(&self.shstrndx) }
     }
 }
 

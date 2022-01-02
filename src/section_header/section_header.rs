@@ -20,64 +20,44 @@ pub struct SectionHeaderGen<T: PrimInt> {
 
 impl<T: PrimInt + Into<u64>> SectionHeader for SectionHeaderGen<T> {
     fn name_off(&self) -> u32 {
-        unsafe {
-            read_unaligned(&self.sh_name)
-        }
+        unsafe { read_unaligned(&self.sh_name) }
     }
 
     fn sh_type(&self) -> SectionType {
-        unsafe {
-            read_unaligned(&self.sh_type).into()
-        }
+        unsafe { read_unaligned(&self.sh_type).into() }
     }
 
     fn flags(&self) -> SectionHeaderFlags {
-        let flags = unsafe {
-            read_unaligned(&self.sh_flags).to_u64().unwrap()
-        };
+        let flags = unsafe { read_unaligned(&self.sh_flags).to_u64().unwrap() };
         SectionHeaderFlags::from_bits_truncate(flags)
     }
 
     fn addr(&self) -> u64 {
-        unsafe {
-            read_unaligned(&self.sh_addr).into()
-        }
+        unsafe { read_unaligned(&self.sh_addr).into() }
     }
 
     fn offset(&self) -> u64 {
-        unsafe {
-            read_unaligned(&self.sh_offset).into()
-        }
+        unsafe { read_unaligned(&self.sh_offset).into() }
     }
 
     fn size(&self) -> u64 {
-        unsafe {
-            read_unaligned(&self.sh_size).into()
-        }
+        unsafe { read_unaligned(&self.sh_size).into() }
     }
 
     fn link(&self) -> u32 {
-        unsafe {
-            read_unaligned(&self.sh_link).into()
-        }
+        unsafe { read_unaligned(&self.sh_link).into() }
     }
 
     fn info(&self) -> u32 {
-        unsafe {
-            read_unaligned(&self.sh_info).into()
-        }
+        unsafe { read_unaligned(&self.sh_info).into() }
     }
 
     fn addralign(&self) -> u64 {
-        unsafe {
-            read_unaligned(&self.sh_addralign).into()
-        }
+        unsafe { read_unaligned(&self.sh_addralign).into() }
     }
 
     fn entsize(&self) -> u64 {
-        unsafe {
-            read_unaligned(&self.sh_entsize).into()
-        }
+        unsafe { read_unaligned(&self.sh_entsize).into() }
     }
 }
 
