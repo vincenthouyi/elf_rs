@@ -65,8 +65,8 @@ impl<'a, ET: ElfType> ElfGen<'a, ET> {
     fn program_header_raw(&'a self) -> &'a [ET::ProgramHeader] {
         let ph_off = self.elf_header().program_header_offset() as usize;
         let ph_num = self.elf_header().program_header_entry_num() as usize;
+        let ph_ptr = unsafe {self.content().as_ptr().add(ph_off)};
         unsafe {
-            let ph_ptr = self.content().as_ptr().add(ph_off);
             from_raw_parts(ph_ptr as *const ET::ProgramHeader, ph_num)
         }
     }
@@ -84,8 +84,8 @@ impl<'a, ET: ElfType> ElfGen<'a, ET> {
     fn section_header_raw(&self) -> &[ET::SectionHeader] {
         let sh_off = self.elf_header().section_header_offset() as usize;
         let sh_num = self.elf_header().section_header_entry_num() as usize;
+        let sh_ptr = unsafe {self.content().as_ptr().add(sh_off)};
         unsafe {
-            let sh_ptr = self.content().as_ptr().add(sh_off);
             from_raw_parts(sh_ptr as *const ET::SectionHeader, sh_num)
         }
     }
