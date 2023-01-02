@@ -1,4 +1,4 @@
-use crate::program_header::{ProgramHeader, ProgramHeaderFlags, ProgramType};
+use crate::program_header::{ProgramHeaderFlags, ProgramHeaderRaw, ProgramType};
 use core::ptr::read_unaligned;
 
 #[derive(Debug)]
@@ -14,7 +14,7 @@ pub struct ProgramHeader64 {
     p_align: u64,
 }
 
-impl ProgramHeader for ProgramHeader64 {
+impl ProgramHeaderRaw for ProgramHeader64 {
     fn ph_type(&self) -> ProgramType {
         unsafe { read_unaligned(&self.p_type).into() }
     }

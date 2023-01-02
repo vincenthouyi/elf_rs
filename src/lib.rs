@@ -31,17 +31,18 @@ mod elf_header;
 mod program_header;
 mod section_header;
 
-pub use elf::{Elf32, Elf64, ElfFile};
+pub use elf::{
+    Elf32, Elf64, ElfFile, ElfHeader, ProgramHeaderEntry, ProgramHeaderIter, SectionHeaderEntry,
+    SectionHeaderIter,
+};
 pub use elf_header::{
-    ElfAbi, ElfClass, ElfEndian, ElfHeader, ElfHeader32, ElfHeader64, ElfMachine, ElfType,
+    ElfAbi, ElfClass, ElfEndian, ElfHeader32, ElfHeader64, ElfHeaderRaw, ElfMachine, ElfType,
 };
 pub use program_header::{
-    ProgramHeader, ProgramHeader32, ProgramHeader64, ProgramHeaderFlags, ProgramHeaderIter,
-    ProgramHeaderWrapper, ProgramType,
+    ProgramHeader32, ProgramHeader64, ProgramHeaderFlags, ProgramHeaderRaw, ProgramType,
 };
 pub use section_header::{
-    SectionHeader, SectionHeader32, SectionHeader64, SectionHeaderFlags, SectionHeaderIter,
-    SectionHeaderWrapper, SectionType,
+    SectionHeader32, SectionHeader64, SectionHeaderFlags, SectionHeaderRaw, SectionType,
 };
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
@@ -84,14 +85,14 @@ impl<'a> ElfFile for Elf<'a> {
         }
     }
 
-    fn elf_header(&self) -> crate::elf_header::ElfHeaderWrapper {
+    fn elf_header(&self) -> ElfHeader {
         match self {
             Elf::Elf32(e) => e.elf_header(),
             Elf::Elf64(e) => e.elf_header(),
         }
     }
 
-    fn program_header_nth(&self, index: usize) -> Option<ProgramHeaderWrapper> {
+    fn program_header_nth(&self, index: usize) -> Option<ProgramHeaderEntry> {
         match self {
             Elf::Elf32(e) => e.program_header_nth(index),
             Elf::Elf64(e) => e.program_header_nth(index),
@@ -105,7 +106,7 @@ impl<'a> ElfFile for Elf<'a> {
         }
     }
 
-    fn section_header_nth(&self, index: usize) -> Option<SectionHeaderWrapper> {
+    fn section_header_nth(&self, index: usize) -> Option<SectionHeaderEntry> {
         match self {
             Elf::Elf32(e) => e.section_header_nth(index),
             Elf::Elf64(e) => e.section_header_nth(index),

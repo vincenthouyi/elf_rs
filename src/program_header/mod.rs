@@ -1,7 +1,3 @@
-use crate::elf::ElfFile;
-use core::fmt::{Debug, Formatter};
-use core::ops::Deref;
-
 mod program_header32;
 mod program_header64;
 
@@ -57,7 +53,7 @@ impl From<u32> for ProgramType {
     }
 }
 
-pub trait ProgramHeader {
+pub trait ProgramHeaderRaw {
     fn ph_type(&self) -> ProgramType;
 
     fn flags(&self) -> ProgramHeaderFlags;
@@ -73,65 +69,4 @@ pub trait ProgramHeader {
     fn memsz(&self) -> u64;
 
     fn align(&self) -> u64;
-}
-
-pub struct ProgramHeaderWrapper<'a> {
-    elf_file: &'a dyn ElfFile,
-    inner: &'a dyn ProgramHeader,
-}
-
-impl<'a> ProgramHeaderWrapper<'a> {
-    pub fn new(elf_file: &'a dyn ElfFile, inner: &'a dyn ProgramHeader) -> Self {
-        Self { elf_file, inner }
-    }
-
-    pub fn content(&self) -> &'a [u8] {
-        let offset = self.inner.offset() as usize;
-        let size = self.inner.filesz() as usize;
-        &self.elf_file.content()[offset..offset + size]
-    }
-}
-
-impl<'a> Deref for ProgramHeaderWrapper<'a> {
-    type Target = dyn ProgramHeader + 'a;
-    fn deref(&self) -> &Self::Target {
-        self.inner
-    }
-}
-
-impl<'a> Debug for ProgramHeaderWrapper<'a> {
-    fn fmt(&self, f: &mut Formatter) -> Result<(), core::fmt::Error> {
-        f.debug_struct("Program Header")
-            .field("type", &self.ph_type())
-            .field("flags", &self.flags())
-            .field("offset", &self.offset())
-            .field("vaddr", &self.vaddr())
-            .field("paddr", &self.paddr())
-            .field("filesize", &self.filesz())
-            .field("memsize", &self.memsz())
-            .field("alignment", &self.align())
-            .finish()
-    }
-}
-
-pub struct ProgramHeaderIter<'a> {
-    elf_file: &'a dyn ElfFile,
-    index: usize,
-}
-
-impl<'a> ProgramHeaderIter<'a> {
-    pub fn new(elf_file: &'a dyn ElfFile) -> Self {
-        Self { elf_file, index: 0 }
-    }
-}
-
-impl<'a> Iterator for ProgramHeaderIter<'a> {
-    type Item = ProgramHeaderWrapper<'a>;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        self.elf_file.program_header_nth(self.index).map(|e| {
-            self.index += 1;
-            e
-        })
-    }
 }

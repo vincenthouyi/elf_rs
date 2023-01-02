@@ -1,7 +1,7 @@
 use core::ptr::read_unaligned;
 use num_traits::PrimInt;
 
-use super::{SectionHeader, SectionHeaderFlags, SectionType};
+use super::{SectionHeaderFlags, SectionHeaderRaw, SectionType};
 
 #[repr(C)]
 #[derive(Debug)]
@@ -18,7 +18,7 @@ pub struct SectionHeaderGen<T: PrimInt> {
     sh_entsize: T,
 }
 
-impl<T: PrimInt + Into<u64>> SectionHeader for SectionHeaderGen<T> {
+impl<T: PrimInt + Into<u64>> SectionHeaderRaw for SectionHeaderGen<T> {
     fn name_off(&self) -> u32 {
         unsafe { read_unaligned(&self.sh_name) }
     }
@@ -28,7 +28,7 @@ impl<T: PrimInt + Into<u64>> SectionHeader for SectionHeaderGen<T> {
     }
 
     fn flags(&self) -> SectionHeaderFlags {
-        let flags = unsafe { read_unaligned(&self.sh_flags).to_u64().unwrap() };
+        let flags = unsafe { read_unaligned(&self.sh_flags).into() };
         SectionHeaderFlags::from_bits_truncate(flags)
     }
 

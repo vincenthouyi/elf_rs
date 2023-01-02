@@ -1,7 +1,7 @@
 use core::ptr::read_unaligned;
 use num_traits::PrimInt;
 
-use super::{ElfAbi, ElfClass, ElfEndian, ElfHeader, ElfMachine, ElfType};
+use super::{ElfAbi, ElfClass, ElfEndian, ElfHeaderRaw, ElfMachine, ElfType};
 
 #[repr(C)]
 #[derive(Debug)]
@@ -28,7 +28,7 @@ pub struct ElfHeaderGen<T: PrimInt> {
     shstrndx: u16,
 }
 
-impl<T: PrimInt + Into<u64>> ElfHeader for ElfHeaderGen<T> {
+impl<T: PrimInt + Into<u64>> ElfHeaderRaw for ElfHeaderGen<T> {
     fn class(&self) -> ElfClass {
         self.class.into()
     }

@@ -6,7 +6,7 @@ use std::io::Read;
 
 use elf_rs::*;
 
-fn read_elf(filename: &String) -> Result<(), ()> {
+fn read_elf(filename: &str) -> Result<(), ()> {
     let mut elf_file = File::open(filename).map_err(|e| {
         println!("failed to open file {}: {}", filename, e);
         ()
@@ -23,18 +23,20 @@ fn read_elf(filename: &String) -> Result<(), ()> {
         ()
     })?;
 
-    println!("{:?} header: {:?}", elf, elf.elf_header());
+    println!("{:#x?}", elf);
+
+    println!("{:#?}", elf.elf_header());
 
     for p in elf.program_header_iter() {
-        println!("{:x?}", p);
+        println!("{:#x?}", p);
     }
 
     for s in elf.section_header_iter() {
-        println!("{:x?}", s);
+        println!("{:#x?}", s);
     }
 
     if let Some(s) = elf.lookup_section(b".text") {
-        println!(".test section {:?}", s);
+        println!(".test section: {:#x?}", s);
     }
 
     Ok(())
