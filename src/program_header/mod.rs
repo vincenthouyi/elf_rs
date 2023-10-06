@@ -14,6 +14,7 @@ bitflags! {
     /// for 64-bit ELFs.
     ///
     /// Also called "Segment Permissions" in ELF specification or "p_flags".
+    #[derive(Debug, Copy, Clone, PartialEq, Eq)]
     pub struct ProgramHeaderFlags: u32 {
         const EXECUTE = 1;
         const WRITE = 2;

@@ -64,6 +64,7 @@ impl From<u32> for SectionType {
 }
 
 bitflags! {
+    #[derive(Debug, Copy, Clone, PartialEq, Eq)]
     pub struct SectionHeaderFlags: u64 {
         const SHF_WRITE             = 0x1;
         const SHF_ALLOC             = 0x2;
