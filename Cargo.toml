@@ -1,6 +1,6 @@
 [package]
 name = "elf_rs"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["Vincent Hou <vincent.houyi@gmail.com>"]
 edition = "2018"
 description = "A simple no_std ELF file reader for ELF32 and ELF64"
